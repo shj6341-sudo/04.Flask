@@ -9,7 +9,8 @@ bp = Blueprint('question', __name__, url_prefix='/question')
 
 @bp.route('/list/')
 def _list():
-    question_list = Question.query.order_by(Question.create_date.desc())
+    page = request.args.get('page', type=int, default=1)
+    question_list = Question.query.order_by(Question.create_date.desc()).paginate(page=page,per_page=10)
 
     # render_template ==> html 파일을 불러오는 역할
     return render_template('question/question_list.html', question_list=question_list, datetime=datetime)
